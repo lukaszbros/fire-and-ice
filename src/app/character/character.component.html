@@ -27,4 +27,14 @@
   </table>
 
   <mat-paginator [pageSizeOptions]="rowSizes" showFirstLastButtons></mat-paginator>
+  <div class="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Page size</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let row of rowSizes" [value]="row">
+          {{row}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>
