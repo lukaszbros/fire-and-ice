@@ -10,7 +10,7 @@ import { FireAndIceApi } from "../entity/FireAndIceApi";
 })
 export class CharacterComponent implements OnInit {
   charactersDatasource: Observable<Character[]>
-  displayedColumns: string[] = ['name'];
+  displayedColumns: string[] = ['name', 'gender', 'culture', 'seasons'];
 
   constructor(private api: FireAndIceApi) {}
 
@@ -29,5 +29,19 @@ export class CharacterComponent implements OnInit {
     }
 
     return names.join(', ');
+  }
+
+  getSeriesCount(character: Character) {
+    if (character.tvSeries) {
+      if (character.tvSeries.length > 1) {
+        return character.tvSeries.length
+      }
+      if (character.tvSeries.length == 1) {
+        if (character.tvSeries[0]) {
+          return 1;
+        }
+      }
+    }
+    return 0
   }
 }
