@@ -17,4 +17,17 @@ export class CharacterComponent implements OnInit {
   ngOnInit() {
     this.charactersDatasource = this.api.getCharacters()
   }
+
+  getAllNames(character: Character) {
+    let names: string[] = []
+    if (character.name) {
+      names.push(character.name);
+    }
+
+    if (character.aliases && character.aliases.length > 0) {
+      names = names.concat(character.aliases);
+    }
+
+    return names.join(', ');
+  }
 }
