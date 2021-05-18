@@ -3,6 +3,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { Observable, Subscription } from "rxjs";
 import { Character } from "../entity/Character";
 import { FireAndIceApi } from "../entity/FireAndIceApi";
+import { Page } from "../entity/Page";
 
 @Component({
   selector: 'character',
@@ -10,7 +11,7 @@ import { FireAndIceApi } from "../entity/FireAndIceApi";
   styleUrls: ['./character.component.scss'],
 })
 export class CharacterComponent implements OnInit, AfterViewInit, OnDestroy {
-  charactersDatasource: Observable<Character[]>
+  charactersDatasource: Character[] = [];
   displayedColumns: string[] = ['name', 'gender', 'culture', 'seasons'];
   rowSizes: number[] = [5, 10, 15, 20, 25];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -19,13 +20,16 @@ export class CharacterComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private api: FireAndIceApi) {}
 
   ngOnInit() {
-    this.charactersDatasource = this.api.getCharacters(this.rowSizes[0]);
+    this.api.getCharacters(this.rowSizes[0], 1).subscribe(page => {
+      this.charactersDatasource = page.data;
+    });
   }
 
   ngAfterViewInit() {
      this.paginatorSubscription = this.paginator.page.subscribe(page => {
-      console.log(page);
-      this.charactersDatasource = this.api.getCharacters(page.pageSize);
+      this.api.getCharacters(page.pageSize, 1).subscribe(page => {
+        this.charactersDatasource = page.data;
+      });
     });
   }
   

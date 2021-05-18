@@ -2,7 +2,8 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
 import { Character } from "./Character";
-import { catchError} from 'rxjs/operators';
+import { catchError, map} from 'rxjs/operators';
+import { Page } from "./Page";
 
 @Injectable()
 export class FireAndIceApi {
@@ -16,8 +17,26 @@ export class FireAndIceApi {
     return throwError(errorMessage);
   }
   
-  getCharacters(pageSize: number): Observable<Character[]> {
-    return this.httpClient.get<Character[]>(`${this.BASE_URL}/characters?pageSize=${pageSize}`).pipe(
+  getCharacters(pageSize: number, page: number): Observable<Page<Character[]>> {
+    return this.httpClient.get<Character[]>(`${this.BASE_URL}/characters?page=${page}&pageSize=${pageSize}`, {observe : 'response'}).pipe(
+      map(response => {
+        const pageLinks = response.headers.get('link').split(',')
+        .map(link => link.trim())
+        .map(link => {
+          const linkParts = link.split(';');
+          return {
+            page: Number(linkParts[0].replace(`<${this.BASE_URL}/characters?page=`,'').replace(`&pageSize=${pageSize}>`,'')),
+            label: linkParts[1].trim().replace('rel=', '').replace(/\"/g, '')
+
+          }
+        });
+        return {
+          page,
+          pageSize,
+          pageLinks,
+          data: response.body
+        }
+      }),
       catchError(this.handleError));
   }
 }
