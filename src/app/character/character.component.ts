@@ -1,10 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
-import { HttpClient } from '@angular/common/http';
-
-export interface Character {
-  name: string;
-}
+import { Character } from "../entity/Character";
+import { FireAndIceApi } from "../entity/FireAndIceApi";
 
 @Component({
   selector: 'character',
@@ -15,9 +12,9 @@ export class CharacterComponent implements OnInit {
   charactersDatasource: Observable<Character[]>
   displayedColumns: string[] = ['name'];
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private api: FireAndIceApi) {}
 
   ngOnInit() {
-    this.charactersDatasource = this.httpClient.get<Character[]>('https://anapioficeandfire.com/api/characters');
+    this.charactersDatasource = this.api.getCharacters()
   }
 }
