@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { HttpClientModule } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CharacterModule } from './character/character.module';
 
@@ -15,6 +16,7 @@ import { CharacterModule } from './character/character.module';
     BrowserModule,
     AppRoutingModule,
     MatToolbarModule,
+    HttpClientModule,
     CharacterModule
   ],
   providers: [],
