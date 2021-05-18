@@ -33,30 +33,18 @@ export class CharacterComponent implements OnInit, AfterViewInit, OnDestroy {
     this.paginatorSubscription.unsubscribe();
   }
 
-  getAllNames(character: Character) {
-    let names: string[] = []
+  getNames(character: Character) {
+    const names = character.aliases.filter(alias => alias);
+    
     if (character.name) {
-      names.push(character.name);
-    }
-
-    if (character.aliases && character.aliases.length > 0) {
-      names = names.concat(character.aliases);
+      names.unshift(character.name);
     }
 
     return names.join(', ');
   }
 
   getSeriesCount(character: Character) {
-    if (character.tvSeries) {
-      if (character.tvSeries.length > 1) {
-        return character.tvSeries.length
-      }
-      if (character.tvSeries.length == 1) {
-        if (character.tvSeries[0]) {
-          return 1;
-        }
-      }
-    }
-    return 0
+    const series = character.tvSeries.filter(series => series);
+    return series.length;
   }
 }
