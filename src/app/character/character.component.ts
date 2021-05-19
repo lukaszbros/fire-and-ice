@@ -1,38 +1,33 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { MatPaginator } from "@angular/material/paginator";
-import { Observable, Subject, Subscription } from "rxjs";
-import { distinctUntilChanged, takeUntil } from "rxjs/operators";
+import { Component, OnInit } from "@angular/core";
 import { Character } from "../entity/Character";
 import { FireAndIceApi } from "../entity/FireAndIceApi";
-import { Page } from "../entity/Page";
+import { PageLink } from "../entity/Page";
 
 @Component({
   selector: 'character',
   templateUrl: './character.component.html',
   styleUrls: ['./character.component.scss'],
 })
-export class CharacterComponent implements OnInit, OnDestroy {
-  charactersDatasource: Character[] = [];
+export class CharacterComponent implements OnInit {
+  characters: Character[] = [];
   displayedColumns: string[] = ['name', 'gender', 'culture', 'seasons'];
   pageSizes = [5, 10, 15, 20, 25];
   pageSize = this.pageSizes[0];
-  private unsubscribeAll: Subject<any>;
+  links: PageLink[] = []
+  page = 1;
 
   constructor(private api: FireAndIceApi) {}
 
   ngOnInit() {
-    this.load();
-  }
-  
-  ngOnDestroy() {
-    this.unsubscribeAll.next();
-    this.unsubscribeAll.complete();
+    this.updateData(this.pageSize, this.page);
   }
 
-  load() {
-    this.api.getCharacters(this.pageSize, 1).subscribe(page => {
-        this.charactersDatasource = page.data ? page.data : [];
+  updateData(pageSize: number, page: number) {
+    this.pageSize = pageSize;
+    this.page = page;
+    this.api.getCharacters(pageSize, page).subscribe(page => {
+        this.characters = page.data ? page.data : [];
+        this.links = page.pageLinks;
     });
   }
 

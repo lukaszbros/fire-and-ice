@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Character list</h1>
-  <table mat-table [dataSource]="charactersDatasource">
+  <table mat-table [dataSource]="characters">
 
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -29,11 +29,15 @@
   <div class="form">
     <mat-form-field appearance="fill">
       <mat-label>Page size</mat-label>
-      <mat-select [(ngModel)]="pageSize" (selectionChange)="load()">
-        <mat-option *ngFor="let page of pageSizes" [value]="page">
-          {{page}}
+      <mat-select [(ngModel)]="pageSize" (selectionChange)="updateData(pageSize, page)">
+        <mat-option *ngFor="let size of pageSizes" [value]="size">
+          {{size}}
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <div>Page: {{page}}</div>
+    <Button *ngFor="let link of links" (click)="updateData(pageSize, link.page)" variant="contained">
+      {{link.label}}
+    </Button>
   </div>
 </div>
