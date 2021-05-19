@@ -8,6 +8,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { PaginationComponent } from "./pagination.component";
 import { RouterModule } from "@angular/router";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { RouterModule } from "@angular/router";
     MatSelectModule,
     MatOptionModule,
     MatFormFieldModule,
+    MatButtonModule,
     FormsModule,
     RouterModule
   ]

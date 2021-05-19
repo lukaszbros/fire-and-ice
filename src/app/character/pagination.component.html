@@ -9,8 +9,8 @@
   </mat-form-field>
   <div>Page: {{page}}</div>
   <div>
-    <Button *ngFor="let link of links" (click)="onPageUpdate.emit([pageSize, link.page])" variant="contained">
+    <button mat-stroked-button *ngFor="let link of links" (click)="onPageUpdate.emit([pageSize, link.page])">
       {{link.label}}
-    </Button>
+    </button>
   </div>
 </div>

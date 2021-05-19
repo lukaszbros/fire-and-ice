@@ -2,8 +2,9 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { BookComponent } from "./book.component";
-import {MatIconModule} from '@angular/material/icon';
-import {MatListModule} from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import {MatListModule} from '@angular/material/list';
     CommonModule,
     RouterModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatButtonModule
   ]
 })
 export class BookModule {
