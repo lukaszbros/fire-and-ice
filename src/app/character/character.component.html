@@ -26,13 +26,12 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="rowSizes" showFirstLastButtons></mat-paginator>
   <div class="form">
     <mat-form-field appearance="fill">
       <mat-label>Page size</mat-label>
-      <mat-select>
-        <mat-option *ngFor="let row of rowSizes" [value]="row">
-          {{row}}
+      <mat-select [(ngModel)]="pageSize" (selectionChange)="load()">
+        <mat-option *ngFor="let page of pageSizes" [value]="page">
+          {{page}}
         </mat-option>
       </mat-select>
     </mat-form-field>
