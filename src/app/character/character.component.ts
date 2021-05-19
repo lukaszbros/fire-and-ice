@@ -8,23 +8,18 @@ import { PageLink } from "../entity/Page";
   templateUrl: './character.component.html',
   styleUrls: ['./character.component.scss'],
 })
-export class CharacterComponent implements OnInit {
+export class CharacterComponent {
   characters: Character[] = [];
   displayedColumns: string[] = ['name', 'gender', 'culture', 'seasons'];
-  pageSizes = [5, 10, 15, 20, 25];
-  pageSize = this.pageSizes[0];
-  links: PageLink[] = []
-  page = 1;
+  links: PageLink[] = [];
 
   constructor(private api: FireAndIceApi) {}
 
   ngOnInit() {
-    this.updateData(this.pageSize, this.page);
+    this.updateData(5, 1);
   }
 
   updateData(pageSize: number, page: number) {
-    this.pageSize = pageSize;
-    this.page = page;
     this.api.getCharacters(pageSize, page).subscribe(page => {
         this.characters = page.data ? page.data : [];
         this.links = page.pageLinks;

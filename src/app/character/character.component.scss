@@ -10,16 +10,3 @@ table {
 td {
   text-align: left;
 }
-
-.pagination {
-  width: 100%;
-  background-color: #424242;
-  padding: 10px 0 0 0;
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-
-  & > div, button, .mat-form-field {
-    margin-right: 6px;
-  }
-}

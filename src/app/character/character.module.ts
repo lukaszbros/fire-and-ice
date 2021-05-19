@@ -7,10 +7,12 @@ import { MatOptionModule } from "@angular/material/core";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { PaginationComponent } from "./pagination.component";
 
 @NgModule({
   declarations: [
-      CharacterComponent
+      CharacterComponent,
+      PaginationComponent
   ], imports: [
     CommonModule,
     MatTableModule,
