@@ -1,0 +1,32 @@
+<h1 *ngIf="!book">Loading book content...</h1>
+<mat-list *ngIf="book">
+  <mat-list-item>
+    <mat-icon matListIcon>book</mat-icon>
+    <h3 matLine> Name </h3>
+    <p matLine>
+      <span>{{book.name}}</span>
+    </p>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon matListIcon>badge</mat-icon>
+    <h3 matLine> ISBN </h3>
+    <p matLine>
+      <span>{{book.isbn}}</span>
+    </p>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon matListIcon>layers</mat-icon>
+    <h3 matLine> Pages </h3>
+    <p matLine>
+      <span>{{book.numberOfPages}}</span>
+    </p>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon matListIcon>calendar_today</mat-icon>
+    <h3 matLine> Released </h3>
+    <p matLine>
+      <span>{{book.released}}</span>
+    </p>
+  </mat-list-item>
+</mat-list>
+<a routerLink="">back</a>

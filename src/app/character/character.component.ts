@@ -10,13 +10,17 @@ import { PageLink } from "../entity/Page";
 })
 export class CharacterComponent {
   characters: Character[] = [];
-  displayedColumns: string[] = ['name', 'gender', 'culture', 'seasons'];
+  displayedColumns: string[] = ['name', 'gender', 'culture', 'books', 'seasons'];
   links: PageLink[] = [];
+  private INITIAL_PAGE_SIZE = 5;
+  private INITIAL_PAGE = 1;
 
-  constructor(private api: FireAndIceApi) {}
+  constructor(
+    private api: FireAndIceApi
+  ) {}
 
   ngOnInit() {
-    this.updateData(5, 1);
+    this.updateData(this.INITIAL_PAGE_SIZE, this.INITIAL_PAGE);
   }
 
   updateData(pageSize: number, page: number) {
@@ -26,18 +30,23 @@ export class CharacterComponent {
     });
   }
 
-  getNames(character: Character) {
+  getNames(character: Character): string[]  {
     const names = character.aliases.filter(alias => alias);
     
     if (character.name) {
       names.unshift(character.name);
     }
 
-    return names.join(', ');
+    return names;
   }
 
-  getSeriesCount(character: Character) {
+  getSeriesCount(character: Character): number {
     const series = character.tvSeries.filter(series => series);
     return series.length;
+  }
+
+  getBooks(character: Character): string[] {
+    const booksIds = character.books.filter(book => book).map(book => book.replace(`${this.api.BASE_URL}/books/`, ''));
+    return booksIds;
   }
 }

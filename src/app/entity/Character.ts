@@ -4,4 +4,5 @@ export interface Character {
   gender: string;
   culture: string;
   tvSeries: string[];
+  books: string[];
 }

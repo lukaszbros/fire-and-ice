@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CharacterModule } from './character/character.module';
 import { FireAndIceApi } from './entity/FireAndIceApi';
+import { BookModule } from './book/book.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FireAndIceApi } from './entity/FireAndIceApi';
     AppRoutingModule,
     MatToolbarModule,
     HttpClientModule,
-    CharacterModule
+    CharacterModule,
+    BookModule
   ],
   providers: [FireAndIceApi],
   bootstrap: [AppComponent]

@@ -4,10 +4,11 @@ import { Observable, throwError } from "rxjs";
 import { Character } from "./Character";
 import { catchError, map} from 'rxjs/operators';
 import { Page } from "./Page";
+import { Book } from "./Book";
 
 @Injectable()
 export class FireAndIceApi {
-  private BASE_URL = 'https://anapioficeandfire.com/api'
+  BASE_URL = 'https://anapioficeandfire.com/api'
 
   constructor(private httpClient: HttpClient) {}
 
@@ -38,5 +39,11 @@ export class FireAndIceApi {
         }
       }),
       catchError(this.handleError));
+  }
+
+  getBook(bookId: string): Observable<Book> {
+    return this.httpClient.get<Book>(`${this.BASE_URL}/books/${bookId}`).pipe(
+      catchError(this.handleError)
+    )
   }
 }
