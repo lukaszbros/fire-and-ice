@@ -1,0 +1,16 @@
+<div class="pagination">
+  <mat-form-field>
+    <mat-label>Page size</mat-label>
+    <mat-select [(ngModel)]="pageSize" (selectionChange)="onPageUpdate.emit([pageSize, page])">
+      <mat-option *ngFor="let size of pageSizes" [value]="size">
+        {{size}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div>Page: {{page}}</div>
+  <div>
+    <Button *ngFor="let link of links" (click)="onPageUpdate.emit([pageSize, link.page])" variant="contained">
+      {{link.label}}
+    </Button>
+  </div>
+</div>
