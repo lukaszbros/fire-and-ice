@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { BehaviorSubject, Subject } from "rxjs";
-import { debounceTime, distinctUntilChanged, takeUntil } from "rxjs/operators";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from "rxjs/operators";
 import { Character } from "../entity/Character";
 import { FireAndIceApi } from "../entity/FireAndIceApi";
 import { PageLink } from "../entity/Page";
@@ -46,9 +46,7 @@ export class CharacterComponent implements OnInit, OnDestroy {
                 debounceTime(300),
                 distinctUntilChanged()
             )
-            .subscribe(filters => {
-              this.characters.next(this.filterData(filters, this.characters.value));
-            });
+            .subscribe(filters => {});
 
     
     this.updateData(this.pageSize, this.page);
@@ -64,20 +62,25 @@ export class CharacterComponent implements OnInit, OnDestroy {
     this.pageSize = pageSize;
     this.api.getCharacters(pageSize, page).subscribe(page => {
         if (page.data) {
-          this.characters.next(this.filterData(this.filterForm.value, page.data));
+          this.characters.next(page.data);
         }
         this.links = page.pageLinks;
     });
   }
 
-  filterData(filters: CharacterFilter, characters: Character[]): Character[] {
-    let filteredCharacters = characters;
-    if (filters.name) {
-      const name = filters.name.toLowerCase();
-      filteredCharacters = filteredCharacters
-        .filter(character => this.getNames(character).map(name => name.toLowerCase()).join('|').includes(name));
-    }
-    return filteredCharacters;
+  filterData(characters: BehaviorSubject<Character[]>): Observable<Character[]> {
+    return characters.pipe(
+      map(value => {
+        let filteredCharacters = value;
+        const filters = this.filterForm.value;
+        if (filters.name) {
+          const name = filters.name.toLowerCase();
+          filteredCharacters = filteredCharacters
+            .filter(character => this.getNames(character).map(name => name.toLowerCase()).join('|').includes(name));
+        }
+        return filteredCharacters;
+      })
+    ) 
   }
 
   getNames(character: Character): string[]  {
