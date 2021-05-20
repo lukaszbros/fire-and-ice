@@ -75,7 +75,7 @@ export class CharacterComponent implements OnInit, OnDestroy {
     if (filters.name) {
       const name = filters.name.toLowerCase();
       filteredCharacters = filteredCharacters
-        .filter(character => character.name.toLowerCase().includes(name));
+        .filter(character => this.getNames(character).map(name => name.toLowerCase()).join('|').includes(name));
     }
     return filteredCharacters;
   }
