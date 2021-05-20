@@ -13,6 +13,9 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <button mat-stroked-button (click)="clearFilter()">
+    Clear filter
+  </button>
 </form>
 <table mat-table [dataSource]="filteredCharacters">
 

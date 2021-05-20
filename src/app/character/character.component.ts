@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from "rxjs/operators";
+import { threadId } from "worker_threads";
 import { Character } from "../entity/Character";
 import { FireAndIceApi } from "../entity/FireAndIceApi";
 import { PageLink } from "../entity/Page";
@@ -76,15 +77,24 @@ export class CharacterComponent implements OnInit, OnDestroy {
 
   filterData(characters: Character[]): Character[] {
     let filteredCharacters = characters;
-        const filters = this.filterForm.value;
+        const filters: CharacterFilter = this.filterForm.value;
         if (filters.name) {
           const name = filters.name.toLowerCase();
           filteredCharacters = filteredCharacters
             .filter(character => this.getNames(character).map(name => name.toLowerCase()).join('|').includes(name));
         }
+
+        if (filters.gender) {
+          const gender = filters.gender === 'Undefined' ? "" : filters.gender;
+          filteredCharacters = filteredCharacters.filter(character => character.gender === gender);
+        }
+
         return filteredCharacters;
   }
- 
+
+  clearFilter() {
+    this.filterForm.reset();
+  }
 
   getNames(character: Character): string[]  {
     const names = character.aliases.filter(alias => alias);
