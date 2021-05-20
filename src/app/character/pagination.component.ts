@@ -7,9 +7,10 @@ import { PageLink } from "../entity/Page";
   styleUrls: ['./pagination.component.scss'],
 })
 export class PaginationComponent {
+  @Input() page: number;
+  @Input() pageSize: number;
+  @Input() pageNumber: number;
   @Input() links: PageLink[];
   @Output() onPageUpdate: EventEmitter<any> = new EventEmitter();
   pageSizes = [5, 10, 15, 20, 25];
-  pageSize = this.pageSizes[0];
-  page = 1;
 }

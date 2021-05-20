@@ -6,6 +6,11 @@ import { Character } from "../entity/Character";
 import { FireAndIceApi } from "../entity/FireAndIceApi";
 import { PageLink } from "../entity/Page";
 
+interface CharacterFilter{
+  name: string;
+  gender: string;
+}
+
 @Component({
   selector: 'character',
   templateUrl: './character.component.html',
@@ -16,10 +21,10 @@ export class CharacterComponent implements OnInit, OnDestroy {
   
   displayedColumns = ['name', 'gender', 'culture', 'books', 'seasons'];
   genders = ['Male', 'Female', 'Unknown'];
+  page = 1;
+  pageSize = 5;
   links: PageLink[] = [];
   filterForm: FormGroup;
-  private INITIAL_PAGE_SIZE = 5;
-  private INITIAL_PAGE = 1;
   private unsubscribeAll: Subject<any>;
 
   constructor(
@@ -30,7 +35,6 @@ export class CharacterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.updateData(this.INITIAL_PAGE_SIZE, this.INITIAL_PAGE);
     this.filterForm = this.formBuilder.group({
       name: [''],
       gender: ['']
@@ -43,8 +47,11 @@ export class CharacterComponent implements OnInit, OnDestroy {
                 distinctUntilChanged()
             )
             .subscribe(filters => {
-                console.log(filters);
+              this.characters.next(this.filterData(filters, this.characters.value));
             });
+
+    
+    this.updateData(this.pageSize, this.page);
   }
 
   ngOnDestroy() {
@@ -53,12 +60,24 @@ export class CharacterComponent implements OnInit, OnDestroy {
   }
 
   updateData(pageSize: number, page: number) {
+    this.page = page;
+    this.pageSize = pageSize;
     this.api.getCharacters(pageSize, page).subscribe(page => {
         if (page.data) {
-          this.characters.next(page.data);
+          this.characters.next(this.filterData(this.filterForm.value, page.data));
         }
         this.links = page.pageLinks;
     });
+  }
+
+  filterData(filters: CharacterFilter, characters: Character[]): Character[] {
+    let filteredCharacters = characters;
+    if (filters.name) {
+      const name = filters.name.toLowerCase();
+      filteredCharacters = filteredCharacters
+        .filter(character => character.name.toLowerCase().includes(name));
+    }
+    return filteredCharacters;
   }
 
   getNames(character: Character): string[]  {

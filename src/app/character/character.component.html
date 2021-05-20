@@ -51,4 +51,4 @@
 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
-<pagination [links]="links" (onPageUpdate)="updateData($event[0], $event[1])"></pagination>
+<pagination [page]="page" [pageSize]="pageSize" [links]="links" (onPageUpdate)="updateData($event[0], $event[1])"></pagination>
