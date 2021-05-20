@@ -30,6 +30,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('fire-and-ice app is running!');
+    expect(compiled.querySelector('mat-toolbar span').textContent).toContain('Fire and Ice Book of Knowledge');
   });
 });

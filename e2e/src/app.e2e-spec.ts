@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('fire-and-ice app is running!');
+    expect(page.getTitleText()).toEqual('Fire and Ice Book of Knowledge');
   });
 
   afterEach(async () => {
