@@ -18,7 +18,7 @@ interface CharacterFilter{
 })
 export class CharacterComponent implements OnInit, OnDestroy {
   characters: BehaviorSubject<Character[]> = new BehaviorSubject([]);
-  
+  filteredCharacters: BehaviorSubject<Character[]> = new BehaviorSubject([]);
   displayedColumns = ['name', 'gender', 'culture', 'books', 'seasons'];
   genders = ['Male', 'Female', 'Unknown'];
   page = 1;
@@ -41,14 +41,20 @@ export class CharacterComponent implements OnInit, OnDestroy {
     });
 
     this.filterForm.valueChanges
-            .pipe(
-                takeUntil(this.unsubscribeAll),
-                debounceTime(300),
-                distinctUntilChanged()
-            )
-            .subscribe(filters => {});
+      .pipe(
+          takeUntil(this.unsubscribeAll),
+          debounceTime(300),
+          distinctUntilChanged()
+      )
+      .subscribe(() => {
+        this.characters.next(this.characters.value);
+      });
 
-    
+    this.characters.pipe(
+      takeUntil(this.unsubscribeAll),
+      map(value => this.filterData(value))
+    ).subscribe(this.filteredCharacters);
+
     this.updateData(this.pageSize, this.page);
   }
 
@@ -68,10 +74,8 @@ export class CharacterComponent implements OnInit, OnDestroy {
     });
   }
 
-  filterData(characters: BehaviorSubject<Character[]>): Observable<Character[]> {
-    return characters.pipe(
-      map(value => {
-        let filteredCharacters = value;
+  filterData(characters: Character[]): Character[] {
+    let filteredCharacters = characters;
         const filters = this.filterForm.value;
         if (filters.name) {
           const name = filters.name.toLowerCase();
@@ -79,9 +83,8 @@ export class CharacterComponent implements OnInit, OnDestroy {
             .filter(character => this.getNames(character).map(name => name.toLowerCase()).join('|').includes(name));
         }
         return filteredCharacters;
-      })
-    ) 
   }
+ 
 
   getNames(character: Character): string[]  {
     const names = character.aliases.filter(alias => alias);

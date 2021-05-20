@@ -14,7 +14,7 @@
     </mat-select>
   </mat-form-field>
 </form>
-<table mat-table [dataSource]="filterData(characters)">
+<table mat-table [dataSource]="filteredCharacters">
 
 <ng-container matColumnDef="name">
   <th mat-header-cell *matHeaderCellDef> Name </th>
