@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
-import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from "rxjs/operators";
-import { threadId } from "worker_threads";
-import { Character } from "../entity/Character";
-import { FireAndIceApi } from "../entity/FireAndIceApi";
-import { PageLink } from "../entity/Page";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { Character } from '../entity/Character';
+import { FireAndIceApi } from '../entity/FireAndIceApi';
+import { PageLink } from '../entity/Page';
 
 interface CharacterFilter{
   name: string;
@@ -13,7 +12,7 @@ interface CharacterFilter{
 }
 
 @Component({
-  selector: 'character',
+  selector: 'fire-and-ice-character',
   templateUrl: './character.component.html',
   styleUrls: ['./character.component.scss'],
 })
@@ -67,29 +66,29 @@ export class CharacterComponent implements OnInit, OnDestroy {
   updateData(pageSize: number, page: number) {
     this.page = page;
     this.pageSize = pageSize;
-    this.api.getCharacters(pageSize, page).subscribe(page => {
-        if (page.data) {
-          this.characters.next(page.data);
+    this.api.getCharacters(pageSize, page).subscribe(response => {
+        if (response.data) {
+          this.characters.next(response.data);
         }
-        this.links = page.pageLinks;
+        this.links = response.pageLinks;
     });
   }
 
   filterData(characters: Character[]): Character[] {
     let filteredCharacters = characters;
-        const filters: CharacterFilter = this.filterForm.value;
-        if (filters.name) {
-          const name = filters.name.toLowerCase();
-          filteredCharacters = filteredCharacters
-            .filter(character => this.getNames(character).map(name => name.toLowerCase()).join('|').includes(name));
-        }
+    const filters: CharacterFilter = this.filterForm.value;
+    if (filters.name) {
+      const name = filters.name.toLowerCase();
+      filteredCharacters = filteredCharacters
+        .filter(character => this.getNames(character).map(characterName => characterName.toLowerCase()).join('|').includes(name));
+    }
 
-        if (filters.gender) {
-          const gender = filters.gender === 'Undefined' ? "" : filters.gender;
-          filteredCharacters = filteredCharacters.filter(character => character.gender === gender);
-        }
+    if (filters.gender) {
+      const gender = filters.gender === 'Undefined' ? '' : filters.gender;
+      filteredCharacters = filteredCharacters.filter(character => character.gender === gender);
+    }
 
-        return filteredCharacters;
+    return filteredCharacters;
   }
 
   clearFilter() {
@@ -98,7 +97,6 @@ export class CharacterComponent implements OnInit, OnDestroy {
 
   getNames(character: Character): string[]  {
     const names = character.aliases.filter(alias => alias);
-    
     if (character.name) {
       names.unshift(character.name);
     }
@@ -107,8 +105,8 @@ export class CharacterComponent implements OnInit, OnDestroy {
   }
 
   getSeriesCount(character: Character): number {
-    const series = character.tvSeries.filter(series => series);
-    return series.length;
+    const realSeries = character.tvSeries.filter(series => series);
+    return realSeries.length;
   }
 
   getBooks(character: Character): string[] {

@@ -19,13 +19,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "fireAndIce",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      "fire-and-ice",
       "kebab-case"
     ],
     "eofline": true,

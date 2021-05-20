@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Book } from "../entity/Book";
-import { FireAndIceApi } from "../entity/FireAndIceApi";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Book } from '../entity/Book';
+import { FireAndIceApi } from '../entity/FireAndIceApi';
 
 @Component({
-  selector: 'book',
+  selector: 'fire-and-ice-book',
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.scss'],
 })
@@ -18,7 +18,7 @@ export class BookComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      const bookId = params['id'];
+      const bookId = params.id;
       this.api.getBook(bookId).subscribe(book => this.book = book);
     });
   }

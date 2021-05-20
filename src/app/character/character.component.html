@@ -54,4 +54,4 @@
 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
-<pagination [page]="page" [pageSize]="pageSize" [links]="links" (onPageUpdate)="updateData($event[0], $event[1])"></pagination>
+<fire-and-ice-pagination [page]="page" [pageSize]="pageSize" [links]="links" (pageUpdate)="updateData($event[0], $event[1])"></fire-and-ice-pagination>

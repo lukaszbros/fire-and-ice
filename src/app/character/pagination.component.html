@@ -1,7 +1,7 @@
 <div class="pagination">
   <mat-form-field>
     <mat-label>Page size</mat-label>
-    <mat-select [(ngModel)]="pageSize" (selectionChange)="onPageUpdate.emit([pageSize, page])">
+    <mat-select [(ngModel)]="pageSize" (selectionChange)="pageUpdate.emit([pageSize, page])">
       <mat-option *ngFor="let size of pageSizes" [value]="size">
         {{size}}
       </mat-option>
@@ -9,7 +9,7 @@
   </mat-form-field>
   <div>Page: {{page}}</div>
   <div>
-    <button mat-stroked-button *ngFor="let link of links" (click)="onPageUpdate.emit([pageSize, link.page])">
+    <button mat-stroked-button *ngFor="let link of links" (click)="pageUpdate.emit([pageSize, link.page])">
       {{link.label}}
     </button>
   </div>
