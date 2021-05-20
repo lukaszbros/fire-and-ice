@@ -1,4 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { BehaviorSubject, Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged, takeUntil } from "rxjs/operators";
 import { Character } from "../entity/Character";
 import { FireAndIceApi } from "../entity/FireAndIceApi";
 import { PageLink } from "../entity/Page";
@@ -8,24 +11,51 @@ import { PageLink } from "../entity/Page";
   templateUrl: './character.component.html',
   styleUrls: ['./character.component.scss'],
 })
-export class CharacterComponent {
-  characters: Character[] = [];
+export class CharacterComponent implements OnInit, OnDestroy {
+  characters: BehaviorSubject<Character[]> = new BehaviorSubject([]);
+  
   displayedColumns: string[] = ['name', 'gender', 'culture', 'books', 'seasons'];
   links: PageLink[] = [];
+  filterForm: FormGroup;
   private INITIAL_PAGE_SIZE = 5;
   private INITIAL_PAGE = 1;
+  private unsubscribeAll: Subject<any>;
 
   constructor(
-    private api: FireAndIceApi
-  ) {}
+    private api: FireAndIceApi,
+    private formBuilder: FormBuilder,
+  ) {
+    this.unsubscribeAll = new Subject();
+  }
 
   ngOnInit() {
     this.updateData(this.INITIAL_PAGE_SIZE, this.INITIAL_PAGE);
+    this.filterForm = this.formBuilder.group({
+      name: [''],
+      gender: ['']
+    });
+
+    this.filterForm.valueChanges
+            .pipe(
+                takeUntil(this.unsubscribeAll),
+                debounceTime(300),
+                distinctUntilChanged()
+            )
+            .subscribe(filters => {
+                console.log(filters);
+            });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   updateData(pageSize: number, page: number) {
     this.api.getCharacters(pageSize, page).subscribe(page => {
-        this.characters = page.data ? page.data : [];
+        if (page.data) {
+          this.characters.next(page.data);
+        }
         this.links = page.pageLinks;
     });
   }

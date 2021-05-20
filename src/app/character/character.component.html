@@ -1,4 +1,10 @@
 <h1>Character list</h1>
+<form [formGroup]="filterForm" class="filter-container">
+  <mat-form-field class="example-full-width">
+    <mat-label>Filter by name</mat-label>
+    <input matInput formControlName="name">
+  </mat-form-field>
+</form>
 <table mat-table [dataSource]="characters">
 
 <ng-container matColumnDef="name">

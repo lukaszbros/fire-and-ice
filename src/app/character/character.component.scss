@@ -3,6 +3,17 @@
   text-align: center;
 }
 
+.filter-container {
+  width: 100%;
+  background-color: #424242;
+  padding: 10px 0 0 10px;
+  color: #ffffff;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  border-bottom: 1px solid #ffffff;
+}
+
 table {
   width: 100%;
 }
