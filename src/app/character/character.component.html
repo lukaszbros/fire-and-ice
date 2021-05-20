@@ -1,8 +1,17 @@
 <h1>Character list</h1>
 <form [formGroup]="filterForm" class="filter-container">
+  <div>Filter by:</div>
   <mat-form-field class="example-full-width">
-    <mat-label>Filter by name</mat-label>
+    <mat-label>Name</mat-label>
     <input matInput formControlName="name">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Gender</mat-label>
+    <mat-select formControlName="gender">
+      <mat-option *ngFor="let gender of genders" [value]="gender">
+        {{gender}}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
 </form>
 <table mat-table [dataSource]="characters">

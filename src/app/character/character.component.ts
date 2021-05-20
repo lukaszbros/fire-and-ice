@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { BehaviorSubject, Subject } from "rxjs";
 import { debounceTime, distinctUntilChanged, takeUntil } from "rxjs/operators";
 import { Character } from "../entity/Character";
@@ -14,7 +14,8 @@ import { PageLink } from "../entity/Page";
 export class CharacterComponent implements OnInit, OnDestroy {
   characters: BehaviorSubject<Character[]> = new BehaviorSubject([]);
   
-  displayedColumns: string[] = ['name', 'gender', 'culture', 'books', 'seasons'];
+  displayedColumns = ['name', 'gender', 'culture', 'books', 'seasons'];
+  genders = ['Male', 'Female', 'Unknown'];
   links: PageLink[] = [];
   filterForm: FormGroup;
   private INITIAL_PAGE_SIZE = 5;
