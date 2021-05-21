@@ -94,7 +94,7 @@ const characters = [{'name': 'Jon Snow',
 
 const links = 'Link: <https://www.anapioficeandfire.com/api/characters?page=2&pageSize=10>; rel="next", <https://www.anapioficeandfire.com/api/characters?page=1&pageSize=10>; rel="first", <https://www.anapioficeandfire.com/api/characters?page=214&pageSize=10>; rel="last"'
 
-describe('GithubApiService', () => {
+describe('FireAndIceApi', () => {
   let service: FireAndIceApi;
   let httpMock: HttpTestingController;
   

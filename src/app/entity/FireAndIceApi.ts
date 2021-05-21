@@ -21,23 +21,33 @@ export class FireAndIceApi {
   getCharacters(pageSize: number, page: number): Observable<Page<Character[]>> {
     return this.httpClient.get<Character[]>(`${this.BASE_URL}/characters?page=${page}&pageSize=${pageSize}`, {observe : 'response'}).pipe(
       map(response => {
-        const pageLinks = response.headers.get('link').split(',')
-        .map(link => link.trim())
-        .map(link => {
-          if (link) {
-            const linkParts = link.split(';');
-            return {
-              page: Number(linkParts[0].replace(`<${this.BASE_URL}/characters?page=`, '').replace(`&pageSize=${pageSize}>`, '')),
-              label: linkParts[1].trim().replace('rel=', '').replace(/\"/g, '')
-            };
+        const linkHeader = response.headers.get('link');
+        if (linkHeader) {
+          const pageLinks = linkHeader.split(',')
+          .map(link => link.trim())
+          .map(link => {
+            if (link) {
+              const linkParts = link.split(';');
+              return {
+                page: Number(linkParts[0].replace(`<${this.BASE_URL}/characters?page=`, '').replace(`&pageSize=${pageSize}>`, '')),
+                label: linkParts[1].trim().replace('rel=', '').replace(/\"/g, '')
+              };
+            }
+          });
+          return {
+            page,
+            pageSize,
+            pageLinks,
+            data: response.body
+          };
+        } else {
+          return {
+            page,
+            pageSize,
+            pageLinks: [],
+            data: response.body
           }
-        });
-        return {
-          page,
-          pageSize,
-          pageLinks,
-          data: response.body
-        };
+        }
       }),
       catchError(this.handleError));
   }
