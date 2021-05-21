@@ -25,7 +25,7 @@
     <mat-icon matListIcon>calendar_today</mat-icon>
     <h3 matLine> Released </h3>
     <p matLine>
-      <span>{{book.released}}</span>
+      <span>{{book.released | date: 'dd/MM/yyyy' }}</span>
     </p>
   </mat-list-item>
 </mat-list>
