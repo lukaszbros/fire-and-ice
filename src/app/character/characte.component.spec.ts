@@ -91,11 +91,12 @@ const characters = [{'name': 'Jon Snow',
   ]
 }];
 
-const api = jasmine.createSpyObj('FireAndIceApi', ['getCharacters']);
+const api = jasmine.createSpyObj('FireAndIceApi', ['getCharacters', 'BASE_URL']);
 
 describe('CharacterComponent', () => {
   beforeEach(async(() => {
     api.getCharacters.and.returnValue(of({page: 1, pageSize:2, pageLinks: [{page: 1, label: 'next'}], data: characters}));
+    api.BASE_URL = 'https://anapioficeandfire.com/api';
 
     TestBed.configureTestingModule({
       declarations: [
@@ -135,11 +136,10 @@ describe('CharacterComponent', () => {
     expect(api.getCharacters.calls.any()).toBe(true);
   }));
 
-  it('should return all character name', () => {
+  it('should return all character names', () => {
     const fixture = TestBed.createComponent(CharacterComponent);
     const component = fixture.componentInstance;
     const names = component.getNames(characters[0]);
-    console.log(names);
     expect(names).toEqual([characters[0].name, ...characters[0].aliases]);
   });
 
@@ -150,4 +150,13 @@ describe('CharacterComponent', () => {
     const names = component.getNames(fakeCharacter);
     expect(names).toEqual([fakeCharacter.name]);
   });
+
+  it('should return all character books', () => {
+    const fixture = TestBed.createComponent(CharacterComponent);
+    const component = fixture.componentInstance;
+    const books = component.getBooks(characters[0]);
+    expect(books).toEqual(['5']);
+  });
+
+  //TODO: Filter and pagination tests
 });
