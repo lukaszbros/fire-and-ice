@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Character } from './Character';
@@ -46,7 +46,7 @@ export class FireAndIceApi {
             pageSize,
             pageLinks: [],
             data: response.body
-          }
+          };
         }
       }),
       catchError(this.handleError));

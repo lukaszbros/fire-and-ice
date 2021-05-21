@@ -13,14 +13,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import characters from './characters.json';
+import characters from '../entity/characters.json';
 
 const api = jasmine.createSpyObj('FireAndIceApi', ['getCharacters', 'BASE_URL']);
-console.log(characters['default']);
 
 describe('CharacterComponent', () => {
   beforeEach(async(() => {
-    api.getCharacters.and.returnValue(of({page: 1, pageSize:2, pageLinks: [{page: 1, label: 'next'}], data: characters}));
+    api.getCharacters.and.returnValue(of({page: 1, pageSize: 2, pageLinks: [{page: 1, label: 'next'}], data: characters}));
     api.BASE_URL = 'https://anapioficeandfire.com/api';
 
     TestBed.configureTestingModule({
@@ -55,7 +54,7 @@ describe('CharacterComponent', () => {
     tick();
     fixture.detectChanges();
     const element = fixture.nativeElement;
-    let trs = element.querySelectorAll('tr');
+    const trs = element.querySelectorAll('tr');
     expect(trs).toBeTruthy();
     expect(trs.length).toBe(characters.length + 1); // + 1 for header row
     expect(api.getCharacters.calls.any()).toBe(true);
@@ -71,7 +70,7 @@ describe('CharacterComponent', () => {
   it('should not return empty aliases', () => {
     const fixture = TestBed.createComponent(CharacterComponent);
     const component = fixture.componentInstance;
-    const fakeCharacter = {name: "test", aliases: [""], gender: "", culture: "", tvSeries: [""], books: [""]}
+    const fakeCharacter = {name: 'test', aliases: [''], gender: '', culture: '', tvSeries: [''], books: ['']};
     const names = component.getNames(fakeCharacter);
     expect(names).toEqual([fakeCharacter.name]);
   });
@@ -83,5 +82,5 @@ describe('CharacterComponent', () => {
     expect(books).toEqual(['5']);
   });
 
-  //TODO: Filter and pagination tests
+  // TODO: Filter and pagination tests
 });
