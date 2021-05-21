@@ -24,11 +24,13 @@ export class FireAndIceApi {
         const pageLinks = response.headers.get('link').split(',')
         .map(link => link.trim())
         .map(link => {
-          const linkParts = link.split(';');
-          return {
-            page: Number(linkParts[0].replace(`<${this.BASE_URL}/characters?page=`, '').replace(`&pageSize=${pageSize}>`, '')),
-            label: linkParts[1].trim().replace('rel=', '').replace(/\"/g, '')
-          };
+          if (link) {
+            const linkParts = link.split(';');
+            return {
+              page: Number(linkParts[0].replace(`<${this.BASE_URL}/characters?page=`, '').replace(`&pageSize=${pageSize}>`, '')),
+              label: linkParts[1].trim().replace('rel=', '').replace(/\"/g, '')
+            };
+          }
         });
         return {
           page,
